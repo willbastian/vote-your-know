@@ -1,26 +1,94 @@
 {% extends "layout.html" %}
 {% block body %}
   
-  
-  
-  
-  <form action="{{ url_for('lookup_election') }}" method="post" class="add-entry">
-      <dl>
-        <dt>Address:
-        <dd><input type="text" size="30" name="address">
-        <dt>Election:
-        <select name="election">
-          {% for election, value in elections.items() %}
-            <option value="{{election}}">{{value["name"]}}</option>    
-          {% endfor %}
-        </select>
-        <dd><input type="submit" value="Share">
-      </dl>
-  </form>
-  <br>
-  {% for candidate, value in candidates.items() %}
-    {{candidate}}
-    {{value}}
-  {% endfor %}
-
+  <div class=lookup>
+    <form action="{{ url_for('lookup_election') }}" method="post" class="add-entry">
+        <dl>
+          <dt>Address:</dt>
+          <dd><input type="text" size="30" name="address"></dd>
+          <dt>Election:</dt>
+          <select name="election">
+            {% for election, value in elections.items() %}
+              <option value="{{election}}">{{value["name"]}}</option>    
+            {% endfor %}
+          </select>
+          <dd><input type="submit" value="Lookup"></dd>
+        </dl>
+    </form>
+  </div>
+  <br/>
+  {# {% if candidates["status"] == "success" %} #}
+    <div class=pollingsites>
+      <h2>Polling Places</h2>
+      {% for polling_location in candidates["pollingLocations"] %}
+        {{polling_location["address"]["locationName"]}}
+        {{polling_location["address"]["line1"]}}
+        {{polling_location["address"]["line2"]}}
+        {{polling_location["address"]["line3"]}}
+        {{polling_location["address"]["city"]}}
+        {{polling_location["address"]["state"]}}
+        {{polling_location["notes"]}}
+        {{polling_location["pollingHours"]}}
+        {{polling_location["voterServices"]}}
+        {{polling_location["startDate"]}}
+        {{polling_location["endDate"]}}
+      {% endfor %}
+    </div>
+    <div class=earlyvotingsites>
+      <h2>Early Voting Locations</h2>
+      {% for early_vote_site in candidates["earlyVoteSites"] %}
+        {{early_vote_site["address"]["locationName"]}}
+        {{early_vote_site["address"]["line1"]}}
+        {{early_vote_site["address"]["line2"]}}
+        {{early_vote_site["address"]["line3"]}}
+        {{early_vote_site["address"]["city"]}}
+        {{early_vote_site["address"]["state"]}}
+        {{early_vote_site["notes"]}}
+        {{early_vote_site["pollingHours"]}}
+        {{early_vote_site["voterServices"]}}
+        {{early_vote_site["startDate"]}}
+        {{early_vote_site["endDate"]}}
+      {% endfor %}
+    </div>
+    <div class=contests>
+      <h2>Contests</h2>
+        {% for contest in candidates["contests"] %}
+          <ul>
+            <li>{{contest["type"]}}</li>
+            <li>{{contest["primaryParty"]}}</li>
+            <li>{{contest["electorateSpecifications"]}}</li>
+            <li>{{contest["special"]}}</li>
+            <li>{{contest["office"]}}</li>
+            <li>{{contest["level"]}}</li>
+            <li>{{contest["district"]["name"]}}</li>
+            <li>{{contest["district"]["scope"]}}</li>
+            <li>{{contest["district"]["id"]}}
+            <li>{{contest["numberElected"]}}</li>
+            <li>{{contest["numberVotingFor"]}}</li>
+            <li>{{contest["ballotPlacement"]}}</li>
+            {% for candidate in contest["candidates"] %}
+              <ul>
+                <li>{{candidate["name"]}}</li>
+                <li>{{candidate["party"]}}</li>
+                <li>{{candidate["candidateUrl"]}}</li>
+                <li>{{candidate["phone"]}}</li>
+                <li>{{candidate["photoUrl"]}}</li>
+                <li>{{candidate["email"]}}</li>
+                <li>{{candidate["orderOnBallot"]}}</li>
+                {% for social_media_channel in candidate["channels"] %}
+                  <ul>
+                    <li>{{social_media_channel["type"]}}</li>
+                    <li>{{social_media_channel["id"]}}</li>
+                  </ul>
+                {% endfor %}
+              </ul>
+            {% endfor %}
+          </ul>
+        {% endfor %}
+    </div>
+    <div class=electionofficials>
+    </div>
+  {# {% else %}
+    Please enter a valid address
+  {% endif %} #}
 {% endblock %}
