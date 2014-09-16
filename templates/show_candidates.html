@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+  
+  
+  
+  
+  <form action="{{ url_for('lookup_election') }}" method="post" class="add-entry">
+      <dl>
+        <dt>Address:
+        <dd><input type="text" size="30" name="address">
+        <dt>Election:
+        <select name="election">
+          {% for election, value in elections.items() %}
+            <option value="{{election}}">{{value["name"]}}</option>    
+          {% endfor %}
+        </select>
+        <dd><input type="submit" value="Share">
+      </dl>
+  </form>
+  <br>
+  {% for candidate, value in candidates.items() %}
+    {{candidate}}
+    {{value}}
+  {% endfor %}
+
+{% endblock %}
