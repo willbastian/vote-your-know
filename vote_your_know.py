@@ -40,11 +40,11 @@ def lookup_election():
     election = request.form['election']
 
     # flash('New entry was successfully posted')
-    candidates = get_candidates(election, address)
+    voterinfo = get_voterinfo(election, address)
     print("election:")
     print(election)
-    return render_template('show_candidates.html', elections=elections,
-                           candidates=candidates)
+    return render_template('show_voterinfo.html', elections=elections,
+                           voterinfo=voterinfo)
 
 
 def get_elections():
@@ -65,7 +65,7 @@ def get_elections():
     return elections
 
 
-def get_candidates(election, address):
+def get_voterinfo(election, address):
     voterinfo_api_final = voterinfo_api_url.format(election, api_key)
     ex_dict = {'address': address}
     headers = {'content-type': 'application/json'}

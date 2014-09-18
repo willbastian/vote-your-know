@@ -1,26 +1,10 @@
-{% extends "layout.html" %}
-{% block body %}
-  
-  <div class=lookup>
-    <form action="{{ url_for('lookup_election') }}" method="post" class="add-entry">
-        <dl>
-          <dt>Address:</dt>
-          <dd><input type="text" size="30" name="address"></dd>
-          <dt>Election:</dt>
-          <select name="election">
-            {% for election, value in elections.items() %}
-              <option value="{{election}}">{{value["name"]}}</option>    
-            {% endfor %}
-          </select>
-          <dd><input type="submit" value="Lookup"></dd>
-        </dl>
-    </form>
-  </div>
-  <br/>
-  {# {% if candidates["status"] == "success" %} #}
+{% extends "show_elections.html" %}
+{% block results %}
+
+  {# {% if voterinfo["status"] == "success" %} #}
     <div class=pollingsites>
       <h2>Polling Places</h2>
-      {% for polling_location in candidates["pollingLocations"] %}
+      {% for polling_location in voterinfo["pollingLocations"] %}
         {{polling_location["address"]["locationName"]}}
         {{polling_location["address"]["line1"]}}
         {{polling_location["address"]["line2"]}}
@@ -36,7 +20,7 @@
     </div>
     <div class=earlyvotingsites>
       <h2>Early Voting Locations</h2>
-      {% for early_vote_site in candidates["earlyVoteSites"] %}
+      {% for early_vote_site in voterinfo["earlyVoteSites"] %}
         {{early_vote_site["address"]["locationName"]}}
         {{early_vote_site["address"]["line1"]}}
         {{early_vote_site["address"]["line2"]}}
@@ -52,7 +36,7 @@
     </div>
     <div class=contests>
       <h2>Contests</h2>
-        {% for contest in candidates["contests"] %}
+        {% for contest in voterinfo["contests"] %}
           <ul>
             <li>{{contest["type"]}}</li>
             <li>{{contest["primaryParty"]}}</li>
@@ -67,7 +51,38 @@
             <li>{{contest["numberVotingFor"]}}</li>
             <li>{{contest["ballotPlacement"]}}</li>
             {% for candidate in contest["candidates"] %}
-              <ul>
+              <div class="candidate">
+                <img src="http://americangeneraltraininginc.com/wp-content/uploads/2014/04/placeholder-1.jpg" alt="">
+
+                <div class="candidate-name">
+                  Name: {{candidate["name"]}}
+                </div>
+
+                <div class="candidate-info">
+                    <div class="candidate-party">
+                      Party: {{candidate["party"]}}
+                    </div>
+                    <div class="candidate-contact">
+                      <a href="{{candidate["candidateUrl"]}}">{{candidate["candidateUrl"]}}</a>
+                      <div class="phone-number">{{candidate["phone"]}}</div>
+                    </div>
+                    <div class="candidate-social">
+                      {% for social_media_channel in candidate["channels"] %}
+                        <ul>
+                          <li>{{social_media_channel["type"]}}</li>
+                          <li>{{social_media_channel["id"]}}</li>
+                        </ul>
+                      {% endfor %}
+                    </div>
+                    <div class="candidate-news">
+                      
+                    </div>
+                  </div>
+              </div>
+
+
+
+              {# <ul>
                 <li>{{candidate["name"]}}</li>
                 <li>{{candidate["party"]}}</li>
                 <li>{{candidate["candidateUrl"]}}</li>
@@ -81,7 +96,7 @@
                     <li>{{social_media_channel["id"]}}</li>
                   </ul>
                 {% endfor %}
-              </ul>
+              </ul> #}
             {% endfor %}
           </ul>
         {% endfor %}
