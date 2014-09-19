@@ -1,25 +1,29 @@
 <!doctype html>
-<title>Vote Your Know</title>
-{% block stylesheet %}
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap.min.css') }}">
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap-theme.min.css') }}">
-{% endblock %}
-
-<div class=page>
-  <h1>Vote Your Know</h1>
-  <nav>
-    <ul>
-        meta navigation toolbar goes here eventually
-      </ul>
-  </nav>
-  
-  </div>
-
-  {% block body %}
-
+<html lang="en">
+  <title>Vote Your Know</title>
+  {% block stylesheet %}
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap.min.css') }}">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap-theme.min.css') }}">
   {% endblock %}
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="static/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
-</div>
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Vote Your Know <small>and know your vote!</small></h1>
+    </div>
+
+    <ul class="nav nav-pills">
+      <li class="active"><a href="#">Elections</a></li>
+      <li><a href="#">Districts</a></li>
+      <li><a href="#">Cats with hats!</a></li>
+    </ul>
+
+    <body>
+    {% block body %}
+    {% endblock %}
+    </body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="static/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+  </div>
+</html>

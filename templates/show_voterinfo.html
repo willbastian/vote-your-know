@@ -2,103 +2,96 @@
 {% block results %}
 
   {# {% if voterinfo["status"] == "success" %} #}
-    <div class=pollingsites>
-      <h2>Polling Places</h2>
-      {% for polling_location in voterinfo["pollingLocations"] %}
-        {{polling_location["address"]["locationName"]}}
-        {{polling_location["address"]["line1"]}}
-        {{polling_location["address"]["line2"]}}
-        {{polling_location["address"]["line3"]}}
-        {{polling_location["address"]["city"]}}
-        {{polling_location["address"]["state"]}}
-        {{polling_location["notes"]}}
-        {{polling_location["pollingHours"]}}
-        {{polling_location["voterServices"]}}
-        {{polling_location["startDate"]}}
-        {{polling_location["endDate"]}}
-      {% endfor %}
+    <div class="row">
+      <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">Polling Place</div>
+        {% for polling_location in voterinfo["pollingLocations"] %}
+          <address>
+            <strong>{{polling_location["address"]["locationName"]}}</strong><br/>
+            {{polling_location["address"]["line1"]}}
+            {{polling_location["address"]["line2"]}}
+            {{polling_location["address"]["line3"]}}
+            {{polling_location["address"]["city"]}}
+            {{polling_location["address"]["state"]}}
+          </address>
+          {{polling_location["notes"]}}
+          {{polling_location["pollingHours"]}}
+          {{polling_location["voterServices"]}}
+          {{polling_location["startDate"]}}
+          {{polling_location["endDate"]}}
+        {% endfor %}
+      </div>
+      </div>
+      <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">Early Voting Location(s)</div>
+
+        {% for early_vote_site in voterinfo["earlyVoteSites"] %}
+          <address>
+            <strong>{{early_vote_site["address"]["locationName"]}}</strong><br/>
+            {{early_vote_site["address"]["line1"]}}
+            {{early_vote_site["address"]["line2"]}}
+            {{early_vote_site["address"]["line3"]}}
+            {{early_vote_site["address"]["city"]}}
+            {{early_vote_site["address"]["state"]}}
+          </address>
+          {{early_vote_site["notes"]}}
+          {{early_vote_site["pollingHours"]}}
+          {{early_vote_site["voterServices"]}}
+          {{early_vote_site["startDate"]}}
+          {{early_vote_site["endDate"]}}
+        {% endfor %}
+      </div>
+      </div>
     </div>
-    <div class=earlyvotingsites>
-      <h2>Early Voting Locations</h2>
-      {% for early_vote_site in voterinfo["earlyVoteSites"] %}
-        {{early_vote_site["address"]["locationName"]}}
-        {{early_vote_site["address"]["line1"]}}
-        {{early_vote_site["address"]["line2"]}}
-        {{early_vote_site["address"]["line3"]}}
-        {{early_vote_site["address"]["city"]}}
-        {{early_vote_site["address"]["state"]}}
-        {{early_vote_site["notes"]}}
-        {{early_vote_site["pollingHours"]}}
-        {{early_vote_site["voterServices"]}}
-        {{early_vote_site["startDate"]}}
-        {{early_vote_site["endDate"]}}
-      {% endfor %}
-    </div>
-    <div class=contests>
-      <h2>Contests</h2>
+    <div class="panel panel-success">
+      <h3 class="panel-heading">Contests</h3>
         {% for contest in voterinfo["contests"] %}
-          <ul>
-            <li>{{contest["type"]}}</li>
-            <li>{{contest["primaryParty"]}}</li>
-            <li>{{contest["electorateSpecifications"]}}</li>
-            <li>{{contest["special"]}}</li>
-            <li>{{contest["office"]}}</li>
-            <li>{{contest["level"]}}</li>
-            <li>{{contest["district"]["name"]}}</li>
-            <li>{{contest["district"]["scope"]}}</li>
-            <li>{{contest["district"]["id"]}}
-            <li>{{contest["numberElected"]}}</li>
-            <li>{{contest["numberVotingFor"]}}</li>
-            <li>{{contest["ballotPlacement"]}}</li>
-            {% for candidate in contest["candidates"] %}
-              <div class="candidate">
-                <img src="http://americangeneraltraininginc.com/wp-content/uploads/2014/04/placeholder-1.jpg" alt="">
-
-                <div class="candidate-name">
-                  Name: {{candidate["name"]}}
-                </div>
-
-                <div class="candidate-info">
-                    <div class="candidate-party">
-                      Party: {{candidate["party"]}}
-                    </div>
-                    <div class="candidate-contact">
-                      <a href="{{candidate["candidateUrl"]}}">{{candidate["candidateUrl"]}}</a>
-                      <div class="phone-number">{{candidate["phone"]}}</div>
-                    </div>
-                    <div class="candidate-social">
-                      {% for social_media_channel in candidate["channels"] %}
-                        <ul>
-                          <li>{{social_media_channel["type"]}}</li>
-                          <li>{{social_media_channel["id"]}}</li>
-                        </ul>
-                      {% endfor %}
-                    </div>
-                    <div class="candidate-news">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{contest["type"]}} - {{contest["office"]}} - {{contest["level"]}}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                {% for candidate in contest["candidates"] %}
+                  <div class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                      <img src="http://americangeneraltraininginc.com/wp-content/uploads/2014/04/placeholder-1.jpg" alt="">
+                      <div class="caption">
+                        <h3>{{candidate["name"]}}</h3>
+                        <p>Party: {{candidate["party"]}}</p>
+                        <p>            
+                          <div class="candidate-contact">
+                          <a href="{{candidate["candidateUrl"]}}">{{candidate["candidateUrl"]}}</a>
+                          <div class="phone-number">{{candidate["phone"]}}</div>
+                          </div>
+                        </p>
+                        <ul class="list-inline">
+                          
                       
+                          
+                          {% for social_media_channel in candidate["channels"] %}
+                            {% if social_media_channel["type"] == "Facebook" %}
+                              <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Facebook-icon.png') }}"></a></li>
+                            {% endif %}
+                            {% if social_media_channel["type"] == "YouTube" %}
+                              <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Youtube-icon.png') }}"></a></li>
+                            {% endif %}
+                            {% if social_media_channel["type"] == "Twitter" %}
+                              <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Twitter-icon.png') }}"></a></li>
+                            {% endif %}
+                          {% endfor %}
+                          
+                          </ul>
+                      </div>
                     </div>
                   </div>
-              </div>
-
-
-
-              {# <ul>
-                <li>{{candidate["name"]}}</li>
-                <li>{{candidate["party"]}}</li>
-                <li>{{candidate["candidateUrl"]}}</li>
-                <li>{{candidate["phone"]}}</li>
-                <li>{{candidate["photoUrl"]}}</li>
-                <li>{{candidate["email"]}}</li>
-                <li>{{candidate["orderOnBallot"]}}</li>
-                {% for social_media_channel in candidate["channels"] %}
-                  <ul>
-                    <li>{{social_media_channel["type"]}}</li>
-                    <li>{{social_media_channel["id"]}}</li>
-                  </ul>
                 {% endfor %}
-              </ul> #}
-            {% endfor %}
-          </ul>
+              </div>
+            </div>
+
+          </div>
         {% endfor %}
     </div>
     <div class=electionofficials>
