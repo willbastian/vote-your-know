@@ -13,12 +13,16 @@ USERNAME = 'admin'
 PASSWORD = 'default'
 
 # goole api info
-api_key = ""
+api_key = "AIzaSyC6WV29UUFLDn4-kXYcwR9Ucuyz1NpYevY"
 # 0 = api_key
 election_api_url = "https://www.googleapis.com/civicinfo/v1/elections?key={0}"
 # 0 = election
 # 1 = api_key
 voterinfo_api_url = "https://www.googleapis.com/civicinfo/v1/voterinfo/{0}/lookup?key={1}"
+# This is v2 (updated on 9/19/2014). V2 for voterinfo is not yet workign w/o an election.
+# 0 = address
+# 1 = api_key
+representative_api_url = "https://www.googleapis.com/civicinfo/v2/representatives?address={0}&key={1}"
 
 print(__name__)
 # create our little application :)
@@ -27,13 +31,18 @@ app.config.from_object(__name__)
 
 
 @app.route('/')
+def show_landing_page():
+    return render_template('landing_page.html')
+
+
+@app.route('/voterinfo')
 def show_elections():
     print("show_elections")
     elections = get_elections()
-    return render_template('show_elections.html', elections=elections)
+    return render_template('show_voterinfo.html', elections=elections, voterinfo=None)
 
 
-@app.route('/lookup', methods=['POST'])
+@app.route('/voterinfo', methods=['POST'])
 def lookup_election():
     elections = get_elections()
     address = request.form['address']
@@ -45,6 +54,19 @@ def lookup_election():
     print(election)
     return render_template('show_voterinfo.html', elections=elections,
                            voterinfo=voterinfo)
+
+
+@app.route('/representatives')
+def show_representatives():
+    return render_template('show_representativeinfo.html', representatives=None)
+
+
+@app.route('/representatives', methods=['POST'])
+def lookup_representatives():
+    address = request.form['address']
+    print("Address :" + address)
+    representatives = get_representativeinfo(address)
+    return render_template('show_representativeinfo.html', representatives=representatives)
 
 
 def get_elections():
@@ -79,6 +101,15 @@ def get_voterinfo(election, address):
     json_candidates = resp_candidates.json()
     print(json.dumps(json_candidates))
     return json_candidates
+
+
+def get_representativeinfo(address):
+    representative_api_url_final = representative_api_url.format(address,
+                                                                 api_key)
+    resp_representatives = requests.get(representative_api_url_final)
+    json_respresentatives = resp_representatives.json()
+
+    return json_respresentatives
 
 # must go at end!
 if __name__ == '__main__':

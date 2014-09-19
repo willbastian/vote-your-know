@@ -1,33 +1,34 @@
 <!doctype html>
 <html lang="en">
-
   <head>
     <title>Vote Your Know</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" >
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap.min.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap-theme.min.css') }}">
-  </head>
-
-  <body>
-    <div class="page">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap.min.css') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap-theme.min.css') }}">
+    </head>
+    <body>
+      <div class="container">
         <div class="page-header">
           <h1>Vote Your Know <small>and know your vote!</small></h1>
         </div>
-  
         <ul class="nav nav-pills">
-          <li class="active"><a href="#">Elections</a></li>
-          <li><a href="#">Districts</a></li>
+          <li class="active"><a href="{{ url_for('show_landing_page') }}">Home</a></li>
+          <li><a href="{{ url_for('show_elections') }}">Elections</a></li>
+          <li><a href="{{ url_for('show_representatives') }}">Current Officials</a></li>
           <li><a href="#">Cats with hats!</a></li>
         </ul>
-  
-  
-      {% block body %}
-      {% endblock %}
-    </div>
-  </body>
-    
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="static/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
-</html>
+        {% block body %}
+        {% endblock %}
+      </div>
+      
+      <div class="footer">
+        <div class="container">
+          <p class="text-muted">&copy; Will Bastian 2014</p>
+        </div>
+      </div>
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="static/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+    </body>
+  </html>
