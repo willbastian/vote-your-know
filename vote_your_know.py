@@ -13,7 +13,7 @@ USERNAME = 'admin'
 PASSWORD = 'default'
 
 # goole api info
-api_key = "AIzaSyC_mRWJJcKolskpUbZiGuHuXUSkAMAzflk"
+api_key = ""
 # 0 = api_key
 election_api_url = "https://www.googleapis.com/civicinfo/v1/elections?key={0}"
 # 0 = election

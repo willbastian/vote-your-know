@@ -55,7 +55,7 @@
             <div class="panel-body">
               <div class="row">
                 {% for candidate in contest["candidates"] %}
-                  <div class="col-sm-6 col-md-3">
+                  <div class="col-sm-6 col-md-2">
                     <div class="thumbnail">
                       <img src="http://americangeneraltraininginc.com/wp-content/uploads/2014/04/placeholder-1.jpg" alt="">
                       <div class="caption">
@@ -67,10 +67,7 @@
                           <div class="phone-number">{{candidate["phone"]}}</div>
                           </div>
                         </p>
-                        <ul class="list-inline">
-                          
-                      
-                          
+                        <ul class="list-inline"p>
                           {% for social_media_channel in candidate["channels"] %}
                             {% if social_media_channel["type"] == "Facebook" %}
                               <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Facebook-icon.png') }}"></a></li>
@@ -82,8 +79,7 @@
                               <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Twitter-icon.png') }}"></a></li>
                             {% endif %}
                           {% endfor %}
-                          
-                          </ul>
+                        </ul>
                       </div>
                     </div>
                   </div>
