@@ -1,22 +1,27 @@
 <!doctype html>
+{% import "bootstrap/wtf.html" as wtf %}
 <html lang="en">
   <head>
     <title>Vote Your Know</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" >
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap.min.css') }}">
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.2.0-dist/css/bootstrap-theme.min.css') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='custom-css/sticky-footer.css') }}">
     </head>
     <body>
       <div class="container">
         <div class="page-header">
           <h1>Vote Your Know <small>and know your vote!</small></h1>
         </div>
+        {% block nav %}
         <ul class="nav nav-pills">
-          <li class="active"><a href="{{ url_for('show_landing_page') }}">Home</a></li>
-          <li><a href="{{ url_for('show_elections') }}">Elections</a></li>
-          <li><a href="{{ url_for('show_representatives') }}">Current Officials</a></li>
-          <li><a href="#">Cats with hats!</a></li>
+          <li class="active"><a href="{{ url_for('show_landing_page') }}" >Home</a></li>
+          <li><a href="{{ url_for('show_elections') }}" >Elections</a></li>
+          <li><a href="{{ url_for('show_representatives') }}" >Current Officials</a></li>
+          <li><a href="# ">Cats with hats!</a></li>
         </ul>
+        {% endblock %}
+        
         {% block body %}
         {% endblock %}
       </div>
