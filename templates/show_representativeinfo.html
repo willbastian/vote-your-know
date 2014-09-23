@@ -20,37 +20,44 @@
         <div class="panel-body">
           <div class="row">
             {% for official_index in office["officialIndices"] %}
-              <div class="col-sm-6 col-md-5">
+              <div class="col-md-6">
                 <div class="thumbnail">
-                  <img src="{{representatives["officials"][official_index]["photoUrl"]}}" alt="">
-                  
-                  <div class="caption">
-                    <h3>{{representatives["officials"][official_index]["name"]}}</h3>
-                    <p>Party: {{representatives["officials"][official_index]["party"]}}</p>
-                    <p>
-                    <div class="candidate-contact">
-                      {% for url in representatives["officials"][official_index]["urls"] %}
-                        <a href="{{url}}">{{url}}</a>
-                      {% endfor %}
-                      {% for phone in representatives["officials"][official_index]["phones"] %}
-                        <div class="phone-number">{{phone}}</div>
-                      {% endfor %}
+                  <h3>{{representatives["officials"][official_index]["name"]}}</h3>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <img style="max-height: 200px;" class="img-responsive img-rounded"src="{{representatives["officials"][official_index]["photoUrl"]}}" alt="">
                     </div>
-                    </p>
-                    
-                    <ul class="list-inline"p>
-                      {% for social_media_channel in representatives["officials"][official_index]["channels"] %}
-                        {% if social_media_channel["type"] == "Facebook" %}
-                          <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Facebook-icon.png') }}"></a></li>
-                        {% endif %}
-                        {% if social_media_channel["type"] == "YouTube" %}
-                          <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Youtube-icon.png') }}"></a></li>
-                        {% endif %}
-                        {% if social_media_channel["type"] == "Twitter" %}
-                          <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Twitter-icon.png') }}"></a></li>
-                        {% endif %}
-                      {% endfor %}
-                    </ul>
+                    <div class="col-md-6">
+                      
+                      <div class="caption">
+                        
+                        <p>Party: {{representatives["officials"][official_index]["party"]}}</p>
+                        <p>
+                        <div class="candidate-contact">
+                          {% for url in representatives["officials"][official_index]["urls"] %}
+                            <a style="word-wrap: break-word;" href="{{url}}">{{url}}</a>
+                          {% endfor %}
+                          {% for phone in representatives["officials"][official_index]["phones"] %}
+                            <div class="phone-number">{{phone}}</div>
+                          {% endfor %}
+                        </div>
+                        </p>
+                        
+                        <ul class="list-inline"p>
+                          {% for social_media_channel in representatives["officials"][official_index]["channels"] %}
+                            {% if social_media_channel["type"] == "Facebook" %}
+                              <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Facebook-icon.png') }}"></a></li>
+                            {% endif %}
+                            {% if social_media_channel["type"] == "YouTube" %}
+                              <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Youtube-icon.png') }}"></a></li>
+                            {% endif %}
+                            {% if social_media_channel["type"] == "Twitter" %}
+                              <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Twitter-icon.png') }}"></a></li>
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

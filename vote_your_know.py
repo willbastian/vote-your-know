@@ -55,14 +55,22 @@ def show_landing_page():
 def show_elections():
     print("show_elections")
     form = AddressElectionLookup()
-    voterinfo = {}
-    address = None
     if form.validate_on_submit():
-        address = form.address.data
-        voterinfo = get_voterinfo(form.election.data, address)
+        print("form validated voterinfo")
+        # TODO use this for display on the form, later
+        # can we default form data with quick_form?
+        session['address'] = form.address.data
+        voterinfo = get_voterinfo(form.election.data,
+                                  form.address.data)
+        session['voterinfo'] = voterinfo
+        if voterinfo.get("status") != "success":
+            flash('Invalid Address or Election entered. Review and try again.')
+
+        print(session.get('voterinfo'))
+        return redirect(url_for('show_elections'))
 
     return render_template('show_voterinfo.html',
-                           voterinfo=voterinfo,
+                           voterinfo=session.get('voterinfo'),
                            lookupform=form)
 
 
@@ -72,10 +80,12 @@ def show_representatives():
     representatives = {}
     address = None
     if form.validate_on_submit():
-        address = form.address.data
-        representatives = get_representativeinfo(address)
+        session['address'] = form.address.data
+        representatives = get_representativeinfo(form.address.data)
+        session['representatives'] = representatives
+
     return render_template('show_representativeinfo.html',
-                           representatives=representatives,
+                           representatives=session.get('representatives'),
                            lookupform=form)
 
 
@@ -90,8 +100,8 @@ def get_elections():
 
     elections = {}
     for election in json_elections['elections']:
-        elections[election['id']] = {'date': election['electionDay'],
-                                     'name': election['name']}
+        elections[election['id']] = {'date': election.get('electionDay'),
+                                     'name': election.get('name')}
     print("Elections:")
     for key, value in elections.items():
         print(key)
@@ -105,7 +115,7 @@ def get_elections_wtf():
     print("ELECTIONS")
     print(elections)
     for key, value in elections.items():
-        election_tuples.append((key, value['name']))
+        election_tuples.append((key, value.get('name')))
 
     print("ELECTION TUPLES")
     print(election_tuples)
