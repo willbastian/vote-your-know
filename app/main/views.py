@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, current_app
+from flask import render_template, session, redirect, url_for, current_app, flash
 from .. import db
 from . import main
 from .forms import AddressElectionLookup, AddressLookup
@@ -20,30 +20,34 @@ def show_elections():
         # TODO use this for display on the form, later
         # can we default form data with quick_form?
         session['address'] = form.address.data
-        voterinfo = get_voterinfo(form.election.data,
-                                  form.address.data)
-        session['voterinfo'] = voterinfo
+        session['election'] = form.election.data
+
+        return redirect(url_for('main.show_elections'))
+
+    address = session.get('address')
+    election = session.get('election')
+    voterinfo = {}
+    if election is not None and address is not None:
+        voterinfo = get_voterinfo(election, address)
         if voterinfo.get("status") != "success":
             flash('Invalid Address or Election entered. Review and try again.')
 
-        print(session.get('voterinfo'))
-        return redirect(url_for('main.show_elections'))
-
     return render_template('show_voterinfo.html',
-                           voterinfo=session.get('voterinfo'),
+                           voterinfo=voterinfo,
                            lookupform=form)
 
 
 @main.route('/representatives', methods=['GET', 'POST'])
 def show_representatives():
     form = AddressLookup()
-    representatives = {}
-    address = None
     if form.validate_on_submit():
         session['address'] = form.address.data
-        representatives = get_representativeinfo(form.address.data)
-        session['representatives'] = representatives
+        return redirect(url_for('main.show_representatives'))
 
+    address = session.get('address')
+    representatives = {}
+    if address is not None:
+        representatives = get_representativeinfo(session.get('address'))
     return render_template('show_representativeinfo.html',
-                           representatives=session.get('representatives'),
+                           representatives=representatives,
                            lookupform=form)
