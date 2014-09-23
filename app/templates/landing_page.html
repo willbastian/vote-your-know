@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block nav %}
   <ul class="nav nav-pills">
-    <li class="active"><a href="{{ url_for('show_landing_page') }}" >Home</a></li>
-    <li><a href="{{ url_for('show_elections') }}" >Elections</a></li>
-    <li><a href="{{ url_for('show_representatives') }}" >Current Officials</a></li>
+    <li class="active"><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
+    <li><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
+    <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
     <li><a href="# ">Cats with hats!</a></li>
   </ul>
 {% endblock %}

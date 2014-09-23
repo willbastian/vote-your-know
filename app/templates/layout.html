@@ -13,34 +13,28 @@
         <div class="page-header">
           <h1>Vote Your Know <small>and know your vote!</small></h1>
         </div>
-
         {% block nav %}
-        <ul class="nav nav-pills">
-          <li class="active"><a href="{{ url_for('show_landing_page') }}" >Home</a></li>
-          <li><a href="{{ url_for('show_elections') }}" >Elections</a></li>
-          <li><a href="{{ url_for('show_representatives') }}" >Current Officials</a></li>
-          <li><a href="# ">Cats with hats!</a></li>
-        </ul>
+          <ul class="nav nav-pills">
+            <li class="active"><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
+            <li><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
+            <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
+            <li><a href="# ">Cats with hats!</a></li>
+          </ul>
         {% endblock %}
-        
-        
-
         {% block content %}
-        <div class="container">
-          {% for message in get_flashed_messages() %}
-          <br />
-          <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
+          <div class="container">
+            {% for message in get_flashed_messages() %}
+              <br />
+              <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+              </div>
+            {% endfor %}
           </div>
-          {% endfor %}
-        </div>
         {% endblock %}
-        
         {% block body %}
         {% endblock %}
       </div>
-      
       <div class="footer">
         <div class="container">
           <p class="text-muted">&copy; Will Bastian 2014</p>
