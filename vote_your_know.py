@@ -1,17 +1,25 @@
 __author__ = 'wbastian'
+import os
 import sys
 import requests
 import json
+
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash
+
+from flask.ext.script import Manager
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.wtf import Form
+from flask.ext.sqlalchemy import SQLAlchemy
+
 from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import Required
 
-# configuration (tbd/in progress)
 
-DATABASE = '/tmp/votr.db'
+# configuration (tbd/in progress)
+basedir = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -38,7 +46,10 @@ print("creating our application....")
 app = Flask(__name__)
 app.config.from_object(__name__)
 print(app.config)
+
+manager = Manager(app)
 bootstrap = Bootstrap(app)
+db = SQLAlchemy(app)
 
 
 #############################
@@ -161,7 +172,38 @@ class AddressLookup(Form):
     address = StringField('Address:', validators=[Required()])
     submit = SubmitField('Submit')
 
+
+# db model classes
+# placeholder for now --
+class Role(db.Model):
+    """docstring for Role"""
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+
+    users = db.relationship('User', backref='role')
+
+    def __repr__(self):
+        return '<Role {0}>'.format(self.name)
+
+
+class User(db.Model):
+    """docstring for User"""
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+    def __repr__(self):
+        return '<User {0}>'.format(self.username)
+
+
+# db shell decorator
+def make_shell_context():
+    return dict(app=app, db=db, User=User, Role=Role)
+manager.add_command("shell", Shell(make_context=make_shell_context))
+
 # must go at end!
 if __name__ == '__main__':
     print ('starting!')
-    app.run(debug=True)
+    manager.run()
