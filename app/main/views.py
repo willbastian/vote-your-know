@@ -1,4 +1,5 @@
-from flask import render_template, session, redirect, url_for, current_app, flash
+from flask import render_template, session, redirect, url_for, current_app,\
+    flash
 from .. import db
 from . import main
 from .forms import AddressElectionLookup, AddressLookup
