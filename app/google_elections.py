@@ -1,8 +1,6 @@
 import requests
 import json
 
-# goole api info
-api_key = "AIzaSyC6WV29UUFLDn4-kXYcwR9Ucuyz1NpYevY"
 # 0 = api_key
 election_api_url = "https://www.googleapis.com/civicinfo/v1/elections?key={0}"
 # 0 = election
@@ -18,9 +16,10 @@ representative_api_url = "https://www.googleapis.com/civicinfo/v2/"\
     "representatives?address={0}&key={1}"
 
 
-def get_elections():
+def get_elections(api_key):
     # TODO fix this to cover the WTF functionality
     print("get_elections")
+    print (api_key)
     election_api_final = election_api_url.format(api_key)
 
     resp_elections = requests.get(election_api_final)
@@ -37,8 +36,8 @@ def get_elections():
     return elections
 
 
-def get_elections_wtf():
-    elections = get_elections()
+def get_elections_wtf(api_key):
+    elections = get_elections(api_key)
     election_tuples = []
     print("ELECTIONS")
     print(elections)
@@ -50,7 +49,7 @@ def get_elections_wtf():
     return election_tuples
 
 
-def get_voterinfo(election, address):
+def get_voterinfo(election, address, api_key):
     voterinfo_api_final = voterinfo_api_url.format(election, api_key)
     ex_dict = {'address': address}
     headers = {'content-type': 'application/json'}
@@ -66,7 +65,7 @@ def get_voterinfo(election, address):
     return json_candidates
 
 
-def get_representativeinfo(address):
+def get_representativeinfo(address, api_key):
     representative_api_url_final = representative_api_url.format(address,
                                                                  api_key)
     resp_representatives = requests.get(representative_api_url_final)
