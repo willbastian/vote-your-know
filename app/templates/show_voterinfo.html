@@ -4,6 +4,7 @@
     <li><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
     <li class="active"><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
     <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
+    <li><a href="{{ url_for('main.show_votehistory_blank') }}" >Vote History</a></li>
   </ul>
 {% endblock %}
 {% block body %}
@@ -71,7 +72,6 @@
                       </div>
                       <div class="col-md-6">
                         <div class="caption">
-
                           <p>Party: {{candidate["party"]}}</p>
                           <p>
                           <div class="candidate-contact">
@@ -102,10 +102,7 @@
           </div>
         </div>
       {% endfor %}
-    </div>
-    <div class=electionofficials>
-    </div>
-    
+    </div>    
   {# {% else %}
     Please enter a valid address
   {% endif %} #}

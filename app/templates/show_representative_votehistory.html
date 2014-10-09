@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block nav %}
+  <ul class="nav nav-pills">
+    <li><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
+    <li><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
+    <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
+    <li class="active"><a href="{{ url_for('main.show_votehistory_blank') }}" >Vote History</a></li>
+  </ul>
+{% endblock %}
+{% block body %}
+  {{ wtf.quick_form(lookupform) }}
+  <br/>
+  <div class="panel panel-success">
+    {% if votehistory %}
+    <h3 class="panel-heading">
+    {{votehistory[0]['person']['name']}}
+    </h3>
+    <div class="panel-body">
+      <div class="row">
+        {% for vote in votehistory %}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              {% if vote.get('full_bill') %}
+                <h3 class="panel-heading">{{vote['full_bill']['title']}}</h3>
+              {% else %}
+                <h3 class="panel-heading">NO DATA HERE</h3>
+              {% endif %}
+              <div class="row">
+                <div class="col-md-6">
+                  
+                </div>
+                <div class="col-md-6">
+                  
+                  <div class="caption">
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

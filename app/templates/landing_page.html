@@ -4,14 +4,14 @@
     <li class="active"><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
     <li><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
     <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
+    <li><a href="{{ url_for('main.show_votehistory_blank') }}" >Vote History</a></li>
   </ul>
 {% endblock %}
-
 {% block body %}
-<br/>
-<div class="jumbotron">
-  <h1>Your vote counts</h1>
-  <p>We want you to know who you're voting for, and understand why.</p>
-  <p><a class="btn btn-primary btn-lg" role="button">Find your representatives</a></p>
+  <br/>
+  <div class="jumbotron">
+    <h1>Your vote counts</h1>
+    <p>We want you to know who you're voting for, and understand why.</p>
+    <p><a class="btn btn-primary btn-lg" role="button">Find your representatives</a></p>
 </div>
 {% endblock %}

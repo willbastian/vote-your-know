@@ -21,6 +21,7 @@ def get_elections(api_key):
     print("get_elections")
     print (api_key)
     election_api_final = election_api_url.format(api_key)
+    print(election_api_final)
 
     resp_elections = requests.get(election_api_final)
     json_elections = resp_elections.json()
@@ -37,6 +38,7 @@ def get_elections(api_key):
 
 
 def get_elections_wtf(api_key):
+    print("get_elections_wtf")
     elections = get_elections(api_key)
     election_tuples = []
     print("ELECTIONS")
@@ -50,6 +52,7 @@ def get_elections_wtf(api_key):
 
 
 def get_voterinfo(election, address, api_key):
+    print("get_voterinfo")
     voterinfo_api_final = voterinfo_api_url.format(election, api_key)
     ex_dict = {'address': address}
     headers = {'content-type': 'application/json'}

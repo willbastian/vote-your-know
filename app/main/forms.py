@@ -18,3 +18,9 @@ class AddressLookup(Form):
     """lookup class for the address only"""
     address = StringField('Address:', validators=[Required()])
     submit = SubmitField('Submit')
+
+
+class CandidateLookup(Form):
+    """lookup class for candidate firstname and lastname"""
+    firstname = StringField('First Name:', validators=[Required()])
+    lastname = StringField('Last Name:', validators=[Required()])

@@ -4,6 +4,7 @@
     <li><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
     <li><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
     <li class="active"><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
+    <li><a href="{{ url_for('main.show_votehistory_blank') }}" >Vote History</a></li>
   </ul>
 {% endblock %}
 {% block body %}
@@ -32,6 +33,9 @@
                         
                         <p>Party: {{representatives["officials"][official_index]["party"]}}</p>
                         <p>
+                        <a href="{{url_for('main.show_votehistory', firstname=representatives["officials"][official_index]['first_name'], lastname=representatives["officials"][official_index]['last_name']) }}">Vote History</a>
+                        </p>
+                        <p>
                         <div class="candidate-contact">
                           {% for url in representatives["officials"][official_index]["urls"] %}
                             <a style="word-wrap: break-word;" href="{{url}}">{{url}}</a>
@@ -42,16 +46,16 @@
                         </div>
                         </p>
                         
-                        <ul class="list-inline"p>
+                        <ul class="list-inline">
                           {% for social_media_channel in representatives["officials"][official_index]["channels"] %}
                             {% if social_media_channel["type"] == "Facebook" %}
-                              <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Facebook-icon.png') }}"></a></li>
+                              <li><a href="http://facebook.com/{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Facebook-icon.png') }}"></a></li>
                             {% endif %}
                             {% if social_media_channel["type"] == "YouTube" %}
-                              <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Youtube-icon.png') }}"></a></li>
+                              <li><a href="http://youtube.com/{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Youtube-icon.png') }}"></a></li>
                             {% endif %}
                             {% if social_media_channel["type"] == "Twitter" %}
-                              <li><a href="{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Twitter-icon.png') }}"></a></li>
+                              <li><a href="http://twitter.com/{{social_media_channel["id"]}}"><img src="{{url_for('static', filename='Twitter-icon.png') }}"></a></li>
                             {% endif %}
                           {% endfor %}
                         </ul>
@@ -66,5 +70,4 @@
       </div>
     {% endfor %}
   </div>
-  
 {% endblock %}
