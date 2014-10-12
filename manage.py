@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
-from app import create_app, db
-from app.models import User, Role
+from application import create_app, db
+from application.models import User, Role
 from flask.ext.script import Manager, Shell
 
 # create_app defined in app (see imports)
