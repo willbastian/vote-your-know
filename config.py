@@ -1,11 +1,14 @@
 import os
+import logging
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    ELECTION_API_KEY = ""
+    # Fill this in with value from console.develoeprs.google
+    # DO NOT COMMIT ACTUAL VALUE
+    ELECTION_API_KEY = "AIzaSyBEPIJlu_cq1AcX-nopwok_v_P3gCNdnJs"
 
     @staticmethod
     def init_app(app):
@@ -16,6 +19,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    logging.basicConfig(level=logging.DEBUG)
 
 
 class TestingConfig(Config):

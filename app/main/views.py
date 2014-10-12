@@ -7,6 +7,7 @@ from ..google_elections import get_voterinfo, get_representativeinfo,\
     get_elections_wtf
 from ..govtrak import get_bills_voted_on, get_bill
 import json
+import logging
 from nameparser import HumanName
 
 
@@ -18,7 +19,7 @@ def show_landing_page():
 
 @main.route('/voterinfo', methods=['GET', 'POST'])
 def show_elections():
-    print("show_elections")
+    logging.debug('start show_elections')
 
     form = AddressElectionLookup()
     # to dynamically build the list, we pass in from the view.
@@ -45,6 +46,7 @@ def show_elections():
                                   current_app.config['ELECTION_API_KEY'])
         if voterinfo.get("status") != "success":
             flash('Invalid Address or Election entered. Review and try again.')
+    logging.debug('ending show_elections')
 
     return render_template('show_voterinfo.html',
                            voterinfo=voterinfo,
@@ -76,17 +78,16 @@ def show_representatives():
 
 @main.route('/votehistory/<firstname>-<lastname>')
 def show_votehistory(firstname, lastname):
+    logging.debug('entering show_votehistory')
     form = CandidateLookup()
     votehistory = get_bills_voted_on(firstname, lastname, 10)
     for vote in votehistory:
-        print('related bill')
-        print(vote['vote']['related_bill'])
         full_bill = get_bill(vote['vote']['related_bill'])
         if full_bill is not None:
-            print ('we have a full bill!')
             vote['full_bill'] = {}
             vote['full_bill']['title'] = full_bill['title']
             vote['full_bill']['link'] = full_bill['link']
+    logging.debug('leaving show_votehistory')
     return render_template('show_representative_votehistory.html',
                            votehistory=votehistory,
                            lookupform=form)

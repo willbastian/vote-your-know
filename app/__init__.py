@@ -2,25 +2,23 @@ from flask import Flask
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy
 from config import config
+import logging
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-print('after db')
 
 
 def create_app(config_name):
-    print('start create_app')
+    logging.debug('start create app')
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    print(app.config)
-    config[config_name].init_app(app)  # does nothing, for now
+    logging.debug('APP CONFIG: ' + str(app.config))
 
-    print("bootstrap init")
+    config[config_name].init_app(app)  # does nothing, for now
     bootstrap.init_app(app)
-    print("db init")
     db.init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-    print('end create_app')
+    logging.debug('end create app')
     return app

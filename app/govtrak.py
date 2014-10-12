@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 
 
 bill_url = 'https://www.govtrack.us/api/v2/bill'
@@ -15,11 +16,8 @@ committee_url = 'https://www.govtrack.us/api/v2/committee'
 def get_name_id(firstname, lastname, **kwargs):
     payload = {'lastname': lastname}
     r = requests.get(person_url, params=payload)
-    # print(r.url)
     j = r.json()
     people = j.get('objects')
-    # print(len(people))
-    # print(people)
     people = [person
               for person
               in people
@@ -41,7 +39,6 @@ def get_bills_voted_on(firstname, lastname, fetchlimit=None):
     nameid = get_name_id(firstname, lastname)
     if nameid is not None:
         # slow, but worth it
-        # problem: we can only
         if fetchlimit is not None:
             limit = min(fetchlimit, 5000)
         else:
@@ -51,19 +48,17 @@ def get_bills_voted_on(firstname, lastname, fetchlimit=None):
         payload = {'person': nameid, 'limit': str(limit),
                    'offset': str(offset), 'sort': '-created'}
         r = requests.get(vote_voter_url, params=payload)
-        print(r.url)
         fetched = limit
         j = r.json()
+        logging.debug('VOTE VOTER: ' + r.text)
         meta = j.get('meta')
         total_count = None
         voted_bills = []
         if meta is not None:
             total_count = meta.get('total_count')
-            print(total_count)
             voted_bills += j.get('objects')
             while (fetchlimit is None or
                    fetched < fetchlimit) and fetched < total_count:
-                # print("HITTING THE LOOP")
                 offset += limit
                 if offset > 10000:
                     # TODO log error
@@ -82,12 +77,4 @@ def get_bill(id):
     if id is not None:
         r = requests.get(bill_url + "/" + str(id))
         j = r.json()
-        print("BILL JSON NEW")
-        print (r.url)
-        print(json.dumps(j))
-        print("END BILL JSON NEW")
         return j
-
-
-a = get_bills_voted_on('charles', 'Schumer', 1)
-# print (json.dumps(a))

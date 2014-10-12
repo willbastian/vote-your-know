@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 
 # 0 = api_key
 election_api_url = "https://www.googleapis.com/civicinfo/v1/elections?key={0}"
@@ -17,54 +18,40 @@ representative_api_url = "https://www.googleapis.com/civicinfo/v2/"\
 
 
 def get_elections(api_key):
-    # TODO fix this to cover the WTF functionality
-    print("get_elections")
-    print (api_key)
     election_api_final = election_api_url.format(api_key)
-    print(election_api_final)
 
     resp_elections = requests.get(election_api_final)
     json_elections = resp_elections.json()
+    logging.debug("ELECTIONS: " + str(resp_elections.text))
 
     elections = {}
     for election in json_elections['elections']:
         elections[election['id']] = {'date': election.get('electionDay'),
                                      'name': election.get('name')}
-    print("Elections:")
-    for key, value in elections.items():
-        print(key)
 
     return elections
 
 
 def get_elections_wtf(api_key):
-    print("get_elections_wtf")
     elections = get_elections(api_key)
     election_tuples = []
-    print("ELECTIONS")
-    print(elections)
     for key, value in elections.items():
         election_tuples.append((key, value.get('name')))
 
-    print("ELECTION TUPLES")
-    print(election_tuples)
     return election_tuples
 
 
 def get_voterinfo(election, address, api_key):
-    print("get_voterinfo")
     voterinfo_api_final = voterinfo_api_url.format(election, api_key)
     ex_dict = {'address': address}
     headers = {'content-type': 'application/json'}
 
-    print(voterinfo_api_final)
-    print("THIS IS FINAL")
     resp_candidates = requests.post(voterinfo_api_final,
                                     data=json.dumps(ex_dict),
                                     headers=headers)
 
     json_candidates = resp_candidates.json()
-    print(json.dumps(json_candidates))
+    logging.debug('CANDIDATES: ' + resp_candidates.text)
     return json_candidates
 
 
@@ -73,5 +60,5 @@ def get_representativeinfo(address, api_key):
                                                                  api_key)
     resp_representatives = requests.get(representative_api_url_final)
     json_respresentatives = resp_representatives.json()
-
+    logging.debug('REPRESENTATIVE INFO: ' + resp_representatives.text)
     return json_respresentatives
