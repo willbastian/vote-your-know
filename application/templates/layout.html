@@ -12,13 +12,20 @@
       <div class="container">
         <div class="page-header">
           <h1>Vote Your Know <small>and know your vote!</small></h1>
+          <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated() %}
+              <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+            {% else %}
+              <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+            {% endif %}
+          </ul>
         </div>
         {% block nav %}
           <ul class="nav nav-pills">
-            <li class="active"><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
+            <li><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
             <li><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
             <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
-            <li><a href="# ">Cats with hats!</a></li>
+            <li><a href="{{ url_for('main.show_votehistory_blank') }}" >Vote History</a></li>
           </ul>
         {% endblock %}
         {% block content %}
