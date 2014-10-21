@@ -52,3 +52,5 @@ nosetests.xml
 # Virtual environment
 venv
 .elasticbeanstalk/
+
+application.config
