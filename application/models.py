@@ -94,7 +94,6 @@ class User(UserMixin, db.Model):
             return False
 
         self.confirmed = True
-        # TODO: Why are we not committing?
         db.session.add(self)
         return True
 
@@ -131,6 +130,26 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
+
+
+class SavedElection(db.Model):
+    """docstring for SavedElection"""
+    __tablename__ = 'saved_elections'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    election_name = db.Column(db.String)
+    candidates = db.relationship('SavedCandidates')
+
+
+class SavedCandidates(db.Model):
+    """docstring for SavedCandidates"""
+    __tablename__ = 'saved_candidates'
+    id = db.Column(db.Integer, primary_key=True)
+    election_id = db.Column(db.Integer, db.ForeignKey('saved_elections.id'))
+    name = db.Column(db.String)
+    party = db.Column(db.String)
+    office = db.Column(db.String)
+
 
 login_manager.anonymous_user = AnonymousUser
 

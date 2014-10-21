@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block nav %}
+  <ul class="nav nav-pills">
+    <li><a href="{{ url_for('main.show_landing_page') }}" >Home</a></li>
+    <li class="active"><a href="{{ url_for('main.show_elections') }}" >Elections</a></li>
+    <li><a href="{{ url_for('main.show_representatives') }}" >Current Officials</a></li>
+    <li><a href="{{ url_for('main.show_votehistory_blank') }}" >Vote History</a></li>
+  </ul>
+{% endblock %}
+{% block body %}
+  {{ wtf.quick_form(lookupform) }}
+  <br/>
+  {% for contest in saved_voterinfo %}
+  {% endfor %}  
+    <div class="panel panel-success">
+      <h3 class="panel-heading">Contests</h3>
+        {% for contest in voterinfo %}
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{contest["office"]}}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                
+                <div class="col-md-6">
+                  
+                  <h3>{{contest["name"]}}</h3>
+                  
+                  <p>Parties: {{contest["party"]}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </form>
+    </div>
+{% endblock %}

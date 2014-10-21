@@ -55,6 +55,10 @@
     </div>
     <div class="panel panel-success">
       <h3 class="panel-heading">Contests</h3>
+      <form action="{{ url_for('main.save_voterinfo') }}" method="post" accept-charset="utf-8">
+      <input type="text" name="vote_name" value="" placeholder="">
+      <input type="submit" value="Save Election Information">
+      
       {% for contest in voterinfo["contests"] %}
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -62,46 +66,54 @@
           </div>
           <div class="panel-body">
             <div class="row">
-              {% for candidate in contest["candidates"] %}
-                <div class="col-md-6">
-                  <div class="thumbnail">
-                    <h3>{{candidate["name"]}}</h3>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <img style="max-height: 200px" src="http://americangeneraltraininginc.com/wp-content/uploads/2014/04/placeholder-1.jpg" alt="">
+                {% for candidate, candidate_detail in contest["candidates"].items() %}
+                  <div class="col-md-6">
+                    <div class="thumbnail">
+                      <h3>{{candidate}}</h3>
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                          <input type="checkbox" name="do_save" value="{{candidate}}|{{candidate_detail}}|{{contest["type"]}}|{{contest["office"]}}|{{contest["level"]}}"> Save Candidate
+                        </label>
                       </div>
-                      <div class="col-md-6">
-                        <div class="caption">
-                          <p>Party: {{candidate["party"]}}</p>
-                          <p>
-                          <div class="candidate-contact">
-                            <a href="{{candidate["candidateUrl"]}}">{{candidate["candidateUrl"]}}</a>
-                            <div class="phone-number">{{candidate["phone"]}}</div>
+                      
+                      <div class="row">
+                        <div class="col-md-6">
+                          <img style="max-height: 200px" src="http://americangeneraltraininginc.com/wp-content/uploads/2014/04/placeholder-1.jpg" alt="">
+                        </div>
+                        <div class="col-md-6">
+                          <div class="caption">
+                            <p>Parties: <ul>{% for party in candidate_detail["party"] %} <li>{{party}}</li>  {% endfor %} </ul></p>
+                            <p>
+                            <div class="candidate-contact">
+                              <a href="{{candidate["candidateUrl"]}}">{{candidate_detail["candidateUrl"]}}</a>
+                              <div class="phone-number">{{candidate_detail["phone"]}}</div>
+                            </div>
+                            </p>
+                            <ul class="list-inline"p>
+                              {% for social_media_channel in candidate_detail["channels"] %}
+                                {% if social_media_channel["type"] == "Facebook" %}
+                                  <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Facebook-icon.png') }}"></a></li>
+                                {% endif %}
+                                {% if social_media_channel["type"] == "YouTube" %}
+                                  <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Youtube-icon.png') }}"></a></li>
+                                {% endif %}
+                                {% if social_media_channel["type"] == "Twitter" %}
+                                  <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Twitter-icon.png') }}"></a></li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
                           </div>
-                          </p>
-                          <ul class="list-inline"p>
-                            {% for social_media_channel in candidate["channels"] %}
-                              {% if social_media_channel["type"] == "Facebook" %}
-                                <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Facebook-icon.png') }}"></a></li>
-                              {% endif %}
-                              {% if social_media_channel["type"] == "YouTube" %}
-                                <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Youtube-icon.png') }}"></a></li>
-                              {% endif %}
-                              {% if social_media_channel["type"] == "Twitter" %}
-                                <li><a href="{{social_media_channel["id"]}}"><img src="{{ url_for('static', filename='Twitter-icon.png') }}"></a></li>
-                              {% endif %}
-                            {% endfor %}
-                          </ul>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              {% endfor %}
+                {% endfor %}
             </div>
           </div>
         </div>
       {% endfor %}
+
+    </form>
     </div>    
   {# {% else %}
     Please enter a valid address
