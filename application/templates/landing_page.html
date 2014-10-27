@@ -10,8 +10,8 @@
 {% block body %}
   <br/>
   <div class="jumbotron">
-    <h1>{% if current_user.is_authenticated() %}{{ current_user.username }}{% else %}Citizen{% endif %}: Your vote counts</h1>
+    <h1>{% if current_user.is_authenticated() %} {{ current_user.username }}: {% endif %}Your vote counts</h1>
     <p>We want you to know who you're voting for, and understand why.</p>
-    <p><a class="btn btn-primary btn-lg" role="button">Find your representatives</a></p>
+    <p><a class="btn btn-primary btn-lg" role="button" href="{{ url_for('main.show_representatives') }}">Find your representatives</a></p>
 </div>
-{% endblock %}
+{% endblock %}k

@@ -41,7 +41,7 @@ def show_elections():
     if form.validate_on_submit():
         session['address'] = form.address.data
         session['election'] = form.election.data
-        if form.saved_searches.data is not None:
+        if form.saved_searches.data:
             session['saved_search'] = form.saved_searches.data.id
         else:
             session['saved_search'] = None
@@ -56,10 +56,9 @@ def show_elections():
     address = session.get('address')
     election = session.get('election')
     saved_search = session.get('saved_search')
-
     form.address.data = address
     form.election.data = election
-    if saved_search is not None:
+    if saved_search:
         form.saved_searches.data = SavedElection.query.get(int(saved_search))
     else:
         form.saved_searches.data = None
@@ -70,7 +69,7 @@ def show_elections():
                                       address,
                                       current_app.config['ELECTION_API_KEY'])
         if voterinfo.get("status") != "success":
-            flash('Invalid Address or Election entered. Review and try again.')    
+            flash('Invalid Address or Election entered. Review and try again.')
         logging.debug('END VOTERINFO')
         return render_template('show_voterinfo.html',
                                voterinfo=voterinfo,
@@ -115,7 +114,8 @@ def save_voterinfo():
         # so dirty. gotta be a better way
         all_info = selection.split('|')
         candidate = all_info[0]
-        candidate_detail = ast.literal_eval(all_info[1])  # Full dict with details
+        # Full dict with details
+        candidate_detail = ast.literal_eval(all_info[1])
         election = all_info[2]  # e.g. General
         office = all_info[3]  # e.g. Us Congress District 12
         level = all_info[4]  # e.g. federal
@@ -144,8 +144,9 @@ def show_representatives():
         return redirect(url_for('main.show_representatives'))
 
     address = session.get('address')
+    form.address.data = address
     representatives = {}
-    if address is not None:
+    if address:
         representatives =\
             get_representativeinfo(session.get('address'),
                                    current_app.config['ELECTION_API_KEY'])

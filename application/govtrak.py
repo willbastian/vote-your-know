@@ -37,9 +37,9 @@ def get_bills_voted_on(firstname, lastname, fetchlimit=None):
     # ensure resulting json list has same count as meta.total_count
     # this method is ugly
     nameid = get_name_id(firstname, lastname)
-    if nameid is not None:
+    if nameid:
         # slow, but worth it
-        if fetchlimit is not None:
+        if fetchlimit:
             limit = min(fetchlimit, 5000)
         else:
             limit = 5000
@@ -54,7 +54,7 @@ def get_bills_voted_on(firstname, lastname, fetchlimit=None):
         meta = j.get('meta')
         total_count = None
         voted_bills = []
-        if meta is not None:
+        if meta:
             total_count = meta.get('total_count')
             voted_bills += j.get('objects')
             while (fetchlimit is None or

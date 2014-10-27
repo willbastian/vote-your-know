@@ -15,7 +15,7 @@ class AddressElectionLookup(Form):
     # caller is responsible for providing choices.
     election = SelectField('Election: ', choices=[])
     saved_searches = QuerySelectField('Saved Searches: ',
-                                      query_factory=lambda: SavedElection.query.filter_by(user_id=current_user.id),
+                                      query_factory=lambda: SavedElection.query.filter_by(user_id=current_user.get_id()),
                                       get_pk=lambda a: a.id,
                                       get_label=lambda a: a.election_name,
                                       allow_blank=True)

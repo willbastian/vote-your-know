@@ -56,26 +56,27 @@ def get_voterinfo(election, address, api_key):
 
 
 def flatten_voterinfo(election, address, api_key):
+    """ We keep the original Google Voter Info Results intact
+    with one key change. The candiates section is now keyed off the candidate
+    name, with the value being all releveant candidate informaiton.
+
+    This lets us build out the party to be a list, and to avoid us
+    showing multiple candidates under a single election because they happen
+    to run under multiple parties.
+
+    Each contest has multiple candidates, and we want to make sure we don't
+    repeat names
+    """
     voter_info = get_voterinfo(election, address, api_key)
     logging.debug("VOTER INFO RAW")
     logging.debug(json.dumps(voter_info))
     logging.debug("END VOTER INFO RAW")
-    # contest
-    #   -candidate
-    #       parties
-    #           - party 1
-    #           - party 2
-    #       social media
-    #           - sm 1
-    #           - sm 2
     contests = voter_info['contests']  # list
-    # for each contest
-    #   if candidate exists in contest, update candidate to include new party
-    #   if candidate does not exist in contest, add candidate
-    final_contests = []
-    for contest in contests:
 
-        if 'candidates' in contest:  # make sure our contest has candidates
+    final_contests = []
+    final_referendum = []
+    for contest in contests:
+        if contest['type'].lower() == 'general':
             candidates_list = {}
             for candidate in contest['candidates']:
                 if candidate['name'] in candidates_list:
@@ -83,6 +84,8 @@ def flatten_voterinfo(election, address, api_key):
                 else:
                     # we key off name, for easy lookup
                     candidates_list[candidate['name']] = {}
+                    # we aren't ensured to have any of the below.
+                    # check for existence first.
                     if 'party' in candidate:
                         candidates_list[candidate['name']]['party'] = [candidate['party']]
                     if 'candidateUrl' in candidate:
@@ -90,18 +93,18 @@ def flatten_voterinfo(election, address, api_key):
                     if 'channels' in candidate:
                         candidates_list[candidate['name']]['channels'] = candidate['channels']
 
-        # final_contests.append({'type': contest['type'],
-        #                        'office': contest['office'],
-        #                        'level': contest['level'],
-        #                        'candidates': candidates_list})
-        contest_dict = {}
-        for element in ['type', 'office', 'level']:
-            if element in contest:
-                contest_dict[element] = contest[element]
-        contest_dict['candidates'] = candidates_list
-        final_contests.append(contest_dict)
+            contest_dict = {}
+            for element in ['type', 'office', 'level']:
+                if element in contest:
+                    contest_dict[element] = contest[element]
+            contest_dict['candidates'] = candidates_list
+            final_contests.append(contest_dict)
+        elif contest['type'].lower() == 'referendum':
+            # we'll add the referendums, as is, to the response in a new section.
+            final_referendum.append(contest)
 
     voter_info['contests'] = final_contests
+    voter_info['referendums'] = final_referendum
     logging.debug('FLATTEN VOTER INFO')
     logging.debug(json.dumps(voter_info))
     logging.debug('END FLATTEN VOTER INFO')
